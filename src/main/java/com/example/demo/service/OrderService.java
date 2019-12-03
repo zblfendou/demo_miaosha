@@ -7,5 +7,5 @@ package com.example.demo.service;
  * @since: 2019/11/29
  */
 public interface OrderService {
-    void createOrder(Long goodId, int buyNum);
+    void createPayingOrder(Long goodId, int buyNum);
 }

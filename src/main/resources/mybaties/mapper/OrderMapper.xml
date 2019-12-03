@@ -5,9 +5,11 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="good_id" jdbcType="BIGINT" property="goodId" />
     <result column="buy_num" jdbcType="INTEGER" property="buyNum" />
+    <result column="pay_state" jdbcType="INTEGER" property="payState" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, good_id, buy_num
+    id, good_id, buy_num, pay_state, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select
@@ -20,10 +22,10 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.example.demo.model.Order">
-    insert into `order` (id, good_id, buy_num
-      )
-    values (#{id,jdbcType=BIGINT}, #{goodId,jdbcType=BIGINT}, #{buyNum,jdbcType=INTEGER}
-      )
+    insert into `order` (id, good_id, buy_num,
+      pay_state, create_time)
+    values (#{id,jdbcType=BIGINT}, #{goodId,jdbcType=BIGINT}, #{buyNum,jdbcType=INTEGER},
+      #{payState,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.demo.model.Order">
     insert into `order`
@@ -37,6 +39,12 @@
       <if test="buyNum != null">
         buy_num,
       </if>
+      <if test="payState != null">
+        pay_state,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -47,6 +55,12 @@
       </if>
       <if test="buyNum != null">
         #{buyNum,jdbcType=INTEGER},
+      </if>
+      <if test="payState != null">
+        #{payState,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -59,13 +73,21 @@
       <if test="buyNum != null">
         buy_num = #{buyNum,jdbcType=INTEGER},
       </if>
+      <if test="payState != null">
+        pay_state = #{payState,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.example.demo.model.Order">
     update `order`
     set good_id = #{goodId,jdbcType=BIGINT},
-      buy_num = #{buyNum,jdbcType=INTEGER}
+      buy_num = #{buyNum,jdbcType=INTEGER},
+      pay_state = #{payState,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

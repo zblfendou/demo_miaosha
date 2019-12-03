@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.common.GoodKey;
+import com.example.demo.enums.OrderPayState;
 import com.example.demo.mapper.OrderMapper;
 import com.example.demo.model.Order;
 import com.example.demo.service.GoodService;
@@ -9,9 +10,9 @@ import com.example.demo.service.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 /**
  * 描述:
@@ -33,13 +34,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void createOrder(Long goodId, int buyNum) {
+    public void createPayingOrder(Long goodId, int buyNum) {
         /*减库存*/
         boolean reduceSuccess = goodService.reduceStock(goodId, buyNum);
         if (reduceSuccess) {
             log.info("减库存成功!!!");
             /*下单*/
-            Order order = new Order.Builder().goodId(goodId).buyNum(buyNum).build();
+            Order order = new Order.Builder()
+                    .goodId(goodId)
+                    .buyNum(buyNum)
+                    .payState(OrderPayState.PAYING.getKey())
+                    .createTime(new Date())
+                    .build();
             orderMapper.insertSelective(order);
             log.info("创建订单成功!!!");
         } else {

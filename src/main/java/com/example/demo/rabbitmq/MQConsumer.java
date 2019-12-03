@@ -9,7 +9,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 描述:
@@ -41,7 +40,7 @@ public class MQConsumer {
             if (good.getStock() <= 0) return;
 
             /*减库存 ，生成订单*/
-            orderService.createOrder(goodId, buyNum);
+            orderService.createPayingOrder(goodId, buyNum);
         }
     }
 }

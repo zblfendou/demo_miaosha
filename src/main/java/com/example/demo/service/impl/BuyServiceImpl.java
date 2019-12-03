@@ -56,12 +56,12 @@ public class BuyServiceImpl implements BuyService, InitializingBean {
 
         /*判断是否卖光了*/
         if (localOverMap.get(goodId)) {
-            return ResultWapper.error("已经卖光了,购买失败");
+            return ResultWapper.error("库存不足，购买失败");
         }
 
         /*预减库存*/
         Long stock = redisService.decr(GoodKey.getGoodsStock, String.valueOf(goodId), buyNum);
-        if (stock<0){
+        if (stock < 0) {
             localOverMap.put(goodId, true);
             return ResultWapper.error("库存不足，购买失败");
         }

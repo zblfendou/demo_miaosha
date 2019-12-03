@@ -1,16 +1,25 @@
 package com.example.demo.model;
 
-public class Order {
+import java.io.Serializable;
+import java.util.Date;
+
+public class Order implements Serializable {
     private Long id;
 
     private Long goodId;
 
     private Integer buyNum;
 
+    private Integer payState;
+
+    private Date createTime;
+
     public Order(Builder builder) {
         setId(builder.id);
         setGoodId(builder.goodId);
         setBuyNum(builder.buyNum);
+        setPayState(builder.payState);
+        setCreateTime(builder.createTime);
     }
 
     public Long getId() {
@@ -37,6 +46,22 @@ public class Order {
         this.buyNum = buyNum;
     }
 
+    public Integer getPayState() {
+        return payState;
+    }
+
+    public void setPayState(Integer payState) {
+        this.payState = payState;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     public Order() {
     }
 
@@ -44,6 +69,8 @@ public class Order {
         private Long id;
         private Long goodId;
         private Integer buyNum;
+        private Integer payState;
+        private Date createTime;
 
         public Builder() {
         }
@@ -60,6 +87,16 @@ public class Order {
 
         public Builder buyNum(Integer val) {
             buyNum = val;
+            return this;
+        }
+
+        public Builder payState(Integer val) {
+            payState = val;
+            return this;
+        }
+
+        public Builder createTime(Date val) {
+            createTime = val;
             return this;
         }
 

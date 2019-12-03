@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.common.quartz.SchedulingUtils;
+import com.example.demo.common.quartz.TestTask;
 import com.example.demo.service.BuyService;
 import com.example.demo.service.GoodService;
 import com.example.demo.service.RedisService;
@@ -12,6 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.inject.Inject;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(classes = DemoApplication.class)
@@ -23,6 +30,8 @@ class DemoApplicationTests {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Inject
+    private SchedulingUtils schedulingUtils;
 
 
     @Test
@@ -31,7 +40,18 @@ class DemoApplicationTests {
         long buyNum = 2;
         ResultWapper resultWapper = buyService.buy(goodId, buyNum);
         outJson(resultWapper);
-        TimeUnit.SECONDS.sleep(2);
+        TimeUnit.SECONDS.sleep(1);
+    }
+
+
+    @Test
+    public void testSchedule() throws InterruptedException {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime plus = now.plus(10, ChronoUnit.SECONDS);
+        DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println(plus.format(formatter));
+        schedulingUtils.addTimedTaskSchedule(new TestTask(plus,231));
+        TimeUnit.SECONDS.sleep(11);
     }
 
     private void outJson(Object obj) {
