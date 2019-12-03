@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Order implements Serializable {
+    private static final long serialVersionUID = -1529100765223369854L;
     private Long id;
 
     private Long goodId;
@@ -12,6 +15,7 @@ public class Order implements Serializable {
 
     private Integer payState;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GTM+8")
     private Date createTime;
 
     public Order(Builder builder) {

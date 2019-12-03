@@ -1,11 +1,11 @@
 package com.example.demo;
 
 import com.example.demo.common.quartz.SchedulingUtils;
-import com.example.demo.common.quartz.TestTask;
+import com.example.demo.common.quartz.order.ProcessOvertimePayingOrderTask;
+import com.example.demo.common.quartz.test.TestTask;
+import com.example.demo.model.Order;
 import com.example.demo.service.BuyService;
-import com.example.demo.service.GoodService;
-import com.example.demo.service.RedisService;
-import com.example.demo.util.RedisUtil;
+import com.example.demo.service.OrderService;
 import com.example.demo.util.ResultWapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootTest(classes = DemoApplication.class)
@@ -32,7 +32,8 @@ class DemoApplicationTests {
     private ObjectMapper objectMapper;
     @Inject
     private SchedulingUtils schedulingUtils;
-
+    @Inject
+    private OrderService orderService;
 
     @Test
     public void buy() throws InterruptedException {
@@ -47,11 +48,17 @@ class DemoApplicationTests {
     @Test
     public void testSchedule() throws InterruptedException {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime plus = now.plus(10, ChronoUnit.SECONDS);
-        DateTimeFormatter formatter =DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println(plus.format(formatter));
-        schedulingUtils.addTimedTaskSchedule(new TestTask(plus,231));
+        LocalDateTime plus = now.plus(5, ChronoUnit.SECONDS);
+
+        schedulingUtils.addTimedTaskSchedule(new ProcessOvertimePayingOrderTask(plus));
+
         TimeUnit.SECONDS.sleep(11);
+    }
+
+    @Test
+    public void testOrder() {
+        List<Order> payingOrders = orderService.getOvertimePayingOrders();
+        outJson(payingOrders);
     }
 
     private void outJson(Object obj) {

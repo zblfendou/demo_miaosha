@@ -1,5 +1,6 @@
-package com.example.demo.common.quartz;
+package com.example.demo.common.quartz.test;
 
+import com.example.demo.common.quartz.TimedTask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
