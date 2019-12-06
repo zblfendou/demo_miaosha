@@ -16,4 +16,5 @@ public interface GoodService {
     Good getGood(Good condition);
 
     boolean reduceStock(Long goodId, int buyNum);
+
 }

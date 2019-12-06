@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -46,10 +47,10 @@ class DemoApplicationTests {
 
 
     @Test
+    @Rollback(false)
     public void testSchedule() throws InterruptedException {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime plus = now.plus(5, ChronoUnit.SECONDS);
-
+        LocalDateTime plus = now.plus(150, ChronoUnit.SECONDS);
         schedulingUtils.addTimedTaskSchedule(new ProcessOvertimePayingOrderTask(plus));
 
         TimeUnit.SECONDS.sleep(11);

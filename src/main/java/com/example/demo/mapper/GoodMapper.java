@@ -23,4 +23,5 @@ public interface GoodMapper {
     Good getGood(Good condition);
 
     int reduceStock(Good g);
+
 }

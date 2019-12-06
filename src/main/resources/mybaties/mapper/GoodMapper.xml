@@ -30,6 +30,9 @@
             <if test=" null != id and '' != id">
                 and id = #{id}
             </if>
+            <if test="null != name and '' != name">
+                and name = #{name}
+            </if>
         </where>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
