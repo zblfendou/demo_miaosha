@@ -10,6 +10,8 @@ import com.example.demo.model.HistoryOrder;
 import com.example.demo.service.GoodService;
 import com.example.demo.service.OrderService;
 import com.example.demo.service.RedisService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -67,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getOvertimePayingOrders() {
-
+        PageHelper.startPage(1, 3);
         return orderMapper.getOvertimePayingOrders(orderConfig.getOvertimeMinute());
     }
 

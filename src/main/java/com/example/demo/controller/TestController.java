@@ -39,11 +39,10 @@ public class TestController {
     public ResultWapper addOrderTask() {
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime plus = now.plus(180, ChronoUnit.SECONDS);
+        LocalDateTime plus = now.plus(30, ChronoUnit.SECONDS);
 
         schedulingUtils.addTimedTaskSchedule(new ProcessOvertimePayingOrderTask(plus));
         return ResultWapper.success();
     }
-
 
 }

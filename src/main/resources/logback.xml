@@ -1,7 +1,7 @@
 <configuration>
 
     <property name="APP_HOME" value="logs" />
-
+    <property name="APPNAME" value="demo" />
     <!-- ch.qos.logback.core.ConsoleAppender 控制台输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -28,6 +28,22 @@
             </pattern>
         </layout>
     </appender>
+
+
+    <appender name="mysqlAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${APP_HOME}${APPNAME}-mysql.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${APP_HOME}/${APPNAME}-mysql-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <logger name="com.example.demo.mapper" level="DEBUG" additivity="true">
+        <appender-ref ref="mysqlAppender"/>
+    </logger>
 
     <!-- 日志级别 -->
     <root>
